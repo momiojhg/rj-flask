@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV 数据可视化</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>CSV 数据可视化</h1>
+    <canvas id="myChart" width="400" height="200"></canvas>
+    <script>
+        // 从后端获取数据
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                // 提取需要的字段
+                const labels = data.map(item => item.名称);
+                const values = data.map(item => item.当日涨幅);
+
+                // 创建图表
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar', // 柱状图
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '当日涨幅',
+                            data: values,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
